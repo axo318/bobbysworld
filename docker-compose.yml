@@ -1,0 +1,30 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_PASSWORD=password
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: './backend'
+    ports:
+      - "5000:5000"
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    environment:
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=password
+      - PGPORT=5432
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: './frontend'
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
